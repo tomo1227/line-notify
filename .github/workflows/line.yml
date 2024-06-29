@@ -31,7 +31,7 @@ jobs:
         if: env.CONTRIBUTIONS_COUNT == '0'
         env:
           LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
-          MESSAGE: "👮今日はまだCommitできていません!今すぐコミットしよう!!"
+          MESSAGE: "👮今日はまだCommitできていません!今すぐコミットしよう!!${{ env.CONTRIBUTIONS_COUNT }}"
         run: |
           curl -X POST -H "Authorization: Bearer $LINE_TOKEN" -F "message=$MESSAGE" https://notify-api.line.me/api/notify
 
