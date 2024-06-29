@@ -19,7 +19,7 @@ jobs:
           echo USERNAME
           echo QUERY
           USERNAME="${{ github.repository_owner }}"
-          QUERY="{\"query\": \"query { user(login: \\\"$USERNAME\\\") { contributionsCollection(from: \\\"$DATE\\\", to: \\\"$DATE\\\") { commitContributionsByRepository { repository { name, defaultBranchRef { name } } contributions(first: 100) { totalCount } } } } }\"}"
+          QUERY="{\"query\": \"query { user(login: \\\"$USERNAME\\\") { contributionsCollection(from: \\\"$START_DATE\\\", to: \\\"$END_DATE\\\") { commitContributionsByRepository { repository { name, defaultBranchRef { name } } contributions(first: 100) { totalCount } } } } }\"}"
 
           RESPONSE=$(curl -H "Authorization: bearer $GITHUB_TOKEN" -H "Content-Type: application/json" -d "$QUERY" https://api.github.com/graphql)
           echo "Response: $RESPONSE"
