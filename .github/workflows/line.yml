@@ -3,6 +3,7 @@ name: Check GitHub Contributions and Notify
 on:
   schedule:
     - cron: "0 13 * * *" # UTC時間で毎日13時（日本時間で22時）に実行
+  workflow_dispatch:
 
 jobs:
   check-and-notify:
@@ -31,5 +32,12 @@ jobs:
         env:
           LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
           MESSAGE: "👮今日はまだCommitできていません!今すぐコミットしよう!!"
+        run: |
+          curl -X POST -H "Authorization: Bearer $LINE_TOKEN" -F "message=$MESSAGE" https://notify-api.line.me/api/notify
+
+      - name: Send LINE Notification Test
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
+          MESSAGE: "テスト🍙🍎"
         run: |
           curl -X POST -H "Authorization: Bearer $LINE_TOKEN" -F "message=$MESSAGE" https://notify-api.line.me/api/notify
