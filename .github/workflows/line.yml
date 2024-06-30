@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check for Contributions on Main and Master Branches
+        shell: bash +e {0}
         id: check_contributions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,7 +30,7 @@ jobs:
           )
 
           echo "Total contributions to main: $TOTAL_CONTRIBUTIONS"
-          echo "CONTRIBUTIONS_COUNT=$TOTAL_COUNT" >> $GITHUB_ENV
+          echo "CONTRIBUTIONS_COUNT=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
 
       - name: Send LINE Notification if No Contributions
         if: env.CONTRIBUTIONS_COUNT == '0'
