@@ -14,10 +14,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DATE=$(date -u +"%Y-%m-%dT00:00:00Z")
-          echo $DATE
-          
-          RESPONSE=$(gh api graphql -F DATE=$DATE -F OWNER=$GITHUB_REPOSITORY_OWNER -f query='
-            query ($DATE: DateTime, $OWNER: String!){
+          RESPONSE=$(gh api graphql -F DATE=$DATE -F USER=$GITHUB_REPOSITORY_OWNER -f query='
+            query ($DATE: DateTime, $USER: String!){
               user(login: $OWNER) {
                 contributionsCollection(from: $DATE, to: $DATE) {
                   contributionCalendar{
@@ -28,14 +26,13 @@ jobs:
             }
             '
           )
-
           echo "Response: $RESPONSE"
           TOTAL_CONTRIBUTIONS=$(echo $RESPONSE | jq '.data.user.contributionsCollection.contributionCalendar.totalContributions')
           echo "Total contributions to main: $TOTAL_CONTRIBUTIONS"
-          echo "CONTRIBUTIONS_COUNT=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
+          echo "TOTAL_CONTRIBUTIONS=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
 
       - name: Send LINE Notification if No Contributions
-        if: env.CONTRIBUTIONS_COUNT == '0'
+        if: env.TOTAL_CONTRIBUTIONS == '0'
         env:
           LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
           MESSAGE: "👮今日はまだCommitできていません!今すぐコミットしよう!!"
