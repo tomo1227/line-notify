@@ -7,7 +7,7 @@ jobs:
   check-and-notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Check for Contributions on Main and Master Branches
+      - name: Check for Contributions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -26,7 +26,7 @@ jobs:
           )
           echo "Response: $RESPONSE"
           TOTAL_CONTRIBUTIONS=$(echo $RESPONSE | jq '.data.user.contributionsCollection.contributionCalendar.totalContributions')
-          echo "Total contributions to main: $TOTAL_CONTRIBUTIONS"
+          echo "Total contributions: $TOTAL_CONTRIBUTIONS"
           echo "TOTAL_CONTRIBUTIONS=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
 
       - name: Send LINE Notification if No Contributions
