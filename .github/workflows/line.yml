@@ -12,7 +12,7 @@ jobs:
       - name: test
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh api graphql -f query='query{viewer{name}}'
+        run: gh api graphql -f query='query{user(login: "tomo1227"){name}}'
 
       - name: Check for Contributions on Main and Master Branches
         env:
@@ -23,7 +23,7 @@ jobs:
           
           RESPONSE=$(gh api graphql -F DATE=$DATE -f query='
             query ($DATE: DateTime){
-              viewer {
+              user(login: "tomo1227") {
                 contributionsCollection(from: $DATE, to: $DATE) {
                   contributionCalendar{
                     totalContributions
