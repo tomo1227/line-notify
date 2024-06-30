@@ -12,7 +12,8 @@ jobs:
       - name: test
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh api graphql -f query='query{user(login: \"tomo1227\"){name}}'
+        run: |
+          gh api graphql -f query='query{user(login: "tomo1227"){name}}'
 
       # - name: Check for Contributions on Main and Master Branches
       #   env:
