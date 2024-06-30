@@ -9,12 +9,6 @@ jobs:
   check-and-notify:
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api graphql -f query='query{user(login: "tomo1227"){name}}'
-
       - name: Check for Contributions on Main and Master Branches
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,7 +30,7 @@ jobs:
           )
 
           echo "Response: $RESPONSE"
-          TOTAL_CONTRIBUTIONS=$(echo $RESPONSE | jq '.data.viewer.contributionsCollection.contributionCalendar.totalContributions')
+          TOTAL_CONTRIBUTIONS=$(echo $RESPONSE | jq '.data.user.contributionsCollection.contributionCalendar.totalContributions')
           echo "Total contributions to main: $TOTAL_CONTRIBUTIONS"
           echo "CONTRIBUTIONS_COUNT=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
 
