@@ -19,7 +19,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DATE=$(date -u +"%Y-%m-%dT00:00:00Z")
-          TOTAL_CONTRIBUTIONS=$(gh api graphql -F DATE=$DATE -f query='
+          echo $DATE
+          
+          RESPONSE=$(gh api graphql -F DATE=$DATE -f query='
             query ($DATE: DateTime){
               viewer {
                 contributionsCollection(from: $DATE, to: $DATE) {
@@ -29,9 +31,11 @@ jobs:
                 }
               }
             }
-            '| jq '.data.viewer.contributionsCollection.contributionCalendar.totalContributions'
+            '
           )
 
+          echo "Response: $RESPONSE"
+          TOTAL_CONTRIBUTIONS=$(echo $RESPONSE | jq '.data.viewer.contributionsCollection.contributionCalendar.totalContributions')
           echo "Total contributions to main: $TOTAL_CONTRIBUTIONS"
           echo "CONTRIBUTIONS_COUNT=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
 
