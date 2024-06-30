@@ -9,9 +9,12 @@ jobs:
   check-and-notify:
     runs-on: ubuntu-latest
     steps:
+      - name: test
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api /octocat --method GET
+
       - name: Check for Contributions on Main and Master Branches
-        shell: bash +e {0}
-        id: check_contributions
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
