@@ -15,30 +15,30 @@ jobs:
         run: |
           gh api graphql -f query='query{user(login: "tomo1227"){name}}'
 
-      # - name: Check for Contributions on Main and Master Branches
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     DATE=$(date -u +"%Y-%m-%dT00:00:00Z")
-      #     echo $DATE
+      - name: Check for Contributions on Main and Master Branches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +"%Y-%m-%dT00:00:00Z")
+          echo $DATE
           
-      #     RESPONSE=$(gh api graphql -F DATE=$DATE -f query='
-      #       query ($DATE: DateTime){
-      #         user(login: "tomo1227") {
-      #           contributionsCollection(from: $DATE, to: $DATE) {
-      #             contributionCalendar{
-      #               totalContributions
-      #             }
-      #           }
-      #         }
-      #       }
-      #       '
-      #     )
+          RESPONSE=$(gh api graphql -F DATE=$DATE -f query='
+            query ($DATE: DateTime){
+              user(login: "tomo1227") {
+                contributionsCollection(from: $DATE, to: $DATE) {
+                  contributionCalendar{
+                    totalContributions
+                  }
+                }
+              }
+            }
+            '
+          )
 
-      #     echo "Response: $RESPONSE"
-      #     TOTAL_CONTRIBUTIONS=$(echo $RESPONSE | jq '.data.viewer.contributionsCollection.contributionCalendar.totalContributions')
-      #     echo "Total contributions to main: $TOTAL_CONTRIBUTIONS"
-      #     echo "CONTRIBUTIONS_COUNT=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
+          echo "Response: $RESPONSE"
+          TOTAL_CONTRIBUTIONS=$(echo $RESPONSE | jq '.data.viewer.contributionsCollection.contributionCalendar.totalContributions')
+          echo "Total contributions to main: $TOTAL_CONTRIBUTIONS"
+          echo "CONTRIBUTIONS_COUNT=$TOTAL_CONTRIBUTIONS" >> $GITHUB_ENV
 
       - name: Send LINE Notification if No Contributions
         if: env.CONTRIBUTIONS_COUNT == '0'
