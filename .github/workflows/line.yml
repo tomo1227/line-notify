@@ -16,7 +16,7 @@ jobs:
           DATE=$(date -u +"%Y-%m-%dT00:00:00Z")
           echo $DATE
           
-          RESPONSE=$(gh api graphql -F DATE=$DATE -F OWNER=$GITHUB_REPOSITORY -f query='
+          RESPONSE=$(gh api graphql -F DATE=$DATE -F OWNER=$GITHUB_REPOSITORY_OWNER -f query='
             query ($DATE: DateTime, $OWNER: String!){
               user(login: $OWNER) {
                 contributionsCollection(from: $DATE, to: $DATE) {
